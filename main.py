@@ -7,9 +7,9 @@ from threading import Thread
 from PyQt5.QtWidgets import QApplication
 from luna_ui import AssistantUI 
 
-
-from lunaAI import get_ai_response
-
+ 
+from lunaAI import get_ai_response 
+print("update")
 
 # Variables
 r = sr.Recognizer()
