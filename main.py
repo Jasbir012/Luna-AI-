@@ -2,36 +2,23 @@ import pyttsx3
 import speech_recognition as sr
 import time
 from datetime import datetime
-import tkinter as tk
+import sys
 from threading import Thread
+from PyQt5.QtWidgets import QApplication
+from luna_ui import AssistantUI 
 
 # Variables
 r = sr.Recognizer()
 keywords = [("luna", 1.0), ("hey luna", 1.0)]
+app = QApplication(sys.argv)
+ui = AssistantUI()
 
-# GUI Setup
-root = tk.Tk()
-root.geometry("800x400")
-root.title("Hello, I'm Luna")
-root.configure(bg="#1e1e1e")
-
-# Chatbox for Text Display
-chatbox = tk.Text(root, font=("Arial", 12), height=20, width=50)
-chatbox.pack(pady=10)
-chatbox.insert(tk.END, "Luna: I'm listening...\n")
-
-def add_to_chatbox(speaker, text):
-    root.after(0, lambda: chatbox.insert(tk.END, f"{speaker}: {text}\n"))
-    root.after(0, lambda: chatbox.see(tk.END))
-
-# Functions
 def speak(text):
     engine = pyttsx3.init()
     voices = engine.getProperty("voices")
     engine.setProperty("voice", voices[1].id)
     engine.setProperty("rate", 150)
     
-    add_to_chatbox("Luna", text)  
     engine.say(text)
     engine.runAndWait()
 
@@ -39,12 +26,12 @@ def callback(recognizer, audio):
     try:
         speech_as_text = recognizer.recognize_sphinx(audio, keyword_entries=keywords)
         print("Detected:", speech_as_text)
-        add_to_chatbox("You", speech_as_text)
 
         if "luna" in speech_as_text or "hey luna" in speech_as_text:
-            speak("Yes, sir")
-            recognizer_main()  
+            ui.update_text("Yes, sir") 
+            recognizer_main()
     except sr.UnknownValueError:
+        ui.update_text("What the hell was that") 
         speak("What the hell was that")
 
 def start_recognizer():
@@ -64,7 +51,7 @@ def recognizer_main():
     try:
         data = r.recognize_google(audio).lower()
         print("You Said:", data)
-        add_to_chatbox("You", data)
+        ui.update_text(data) 
 
         if "how are you" in data:
             speak("I am fine")
@@ -79,13 +66,13 @@ def recognizer_main():
             speak("I'm sorry sir, I did not understand your request")
 
     except sr.UnknownValueError:
-        add_to_chatbox("Luna", "I didn't understand that")
+        print("I didn't understand that")
     except sr.RequestError:
-        add_to_chatbox("Luna", "Error connecting to recognition service.")
+        print("Error connecting to recognition service.")
 
 # Run recognizer in a separate thread
 thread = Thread(target=start_recognizer, daemon=True)
 thread.start()
 
-# Start GUI loop
-root.mainloop()
+# Start PyQt UI
+sys.exit(app.exec_())
