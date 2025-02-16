@@ -7,6 +7,10 @@ from threading import Thread
 from PyQt5.QtWidgets import QApplication
 from luna_ui import AssistantUI 
 
+
+from lunaAI import get_ai_response
+
+
 # Variables
 r = sr.Recognizer()
 keywords = [("luna", 1.0), ("hey luna", 1.0)]
@@ -62,8 +66,14 @@ def recognizer_main():
             speak(f"It's {current_time} right now")
         elif "hello" in data:
             speak("Hi there")
+       
         else:
-            speak("I'm sorry sir, I did not understand your request")
+            ai_response = get_ai_response(data)
+            ui.update_text(ai_response)
+            speak(ai_response)
+        
+        
+        
 
     except sr.UnknownValueError:
         print("I didn't understand that")
