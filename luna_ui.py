@@ -58,7 +58,7 @@ class AssistantUI(QWidget):
         painter.drawRoundedRect(0, 0, self.width(), self.height(), 30, 30)
         
     def start_dot_animation(self):
-        """Animates the dots to simulate a listening effect."""
+
         self.dots_texts = ["● ○ ○", "● ● ○", "● ● ●", "○ ● ●", "○ ○ ●", "○ ○ ○"]
         self.current_index = 0
         self.timer = QTimer(self)
