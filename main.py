@@ -80,9 +80,9 @@ def recognizer_main():
     except sr.RequestError:
         print("Error connecting to recognition service.")
 
-# Run recognizer in a separate thread
+
 thread = Thread(target=start_recognizer, daemon=True)
 thread.start()
 
-# Start PyQt UI
+
 sys.exit(app.exec_())
