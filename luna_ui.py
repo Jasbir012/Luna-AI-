@@ -52,7 +52,7 @@ class AssistantUI(QWidget):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
 
-        brush = QBrush(QColor(30, 30, 30, 220))  # Dark translucent background
+        brush = QBrush(QColor(30, 30, 30, 220))  
         painter.setBrush(brush)
         painter.setPen(Qt.NoPen)
         painter.drawRoundedRect(0, 0, self.width(), self.height(), 30, 30)
@@ -66,16 +66,16 @@ class AssistantUI(QWidget):
         self.timer.start(300)
 
     def update_dots(self):
-        """Updates dots animation."""
+        
         self.dots.setText(self.dots_texts[self.current_index])
         self.current_index = (self.current_index + 1) % len(self.dots_texts)
         
     def update_text(self, text):
-        """Updates the text label."""
+        
         self.label.setText(text)
         
     def close_after(self, seconds):
-        """Closes the UI after a given number of seconds."""
+    
         QTimer.singleShot(seconds * 1000, self.close)
 
 if __name__ == "__main__":
